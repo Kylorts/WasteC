@@ -18,7 +18,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.wastec.R
 import com.example.wastec.databinding.FragmentScanBinding
-import com.example.wastec.presentation.viewmodel.ScanViewModel
+import com.example.wastec.presentation.viewmodel.scan.ScanViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 

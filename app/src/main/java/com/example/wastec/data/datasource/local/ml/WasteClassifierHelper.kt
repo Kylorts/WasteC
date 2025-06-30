@@ -6,7 +6,6 @@ import android.util.Log
 import com.example.wastec.domain.model.ClassificationResult
 import org.tensorflow.lite.DataType
 import org.tensorflow.lite.Interpreter
-import org.tensorflow.lite.support.common.ops.NormalizeOp
 import org.tensorflow.lite.support.image.ImageProcessor
 import org.tensorflow.lite.support.image.TensorImage
 import org.tensorflow.lite.support.image.ops.ResizeOp
@@ -35,16 +34,6 @@ class WasteClassifierHelper(
             }
             interpreter = Interpreter(model, options)
             labels = context.assets.open("labels.txt").bufferedReader().useLines { it.toList() }
-            val inputTensor = interpreter!!.getInputTensor(0)
-            val outputTensor = interpreter!!.getOutputTensor(0)
-
-            Log.d("TFLite-Check", "--- Input Tensor ---")
-            Log.d("TFLite-Check", "Shape: ${inputTensor.shape().joinToString(", ")}")
-            Log.d("TFLite-Check", "Data Type: ${inputTensor.dataType()}")
-
-            Log.d("TFLite-Check", "--- Output Tensor ---")
-            Log.d("TFLite-Check", "Shape: ${outputTensor.shape().joinToString(", ")}")
-            Log.d("TFLite-Check", "Data Type: ${outputTensor.dataType()}")
         } catch (e: Exception) {
             classifierListener?.onError("Gagal menginisialisasi TFLite Interpreter: ${e.message}")
             Log.e("WasteClassifierHelper", "Error initializing TFLite Interpreter", e)
@@ -66,32 +55,19 @@ class WasteClassifierHelper(
             return
         }
 
-        // ====================================================================
-        //           PERUBAHAN UTAMA: MENGGUNAKAN IMAGEPROCESSOR
-        // ====================================================================
-
-        // 1. Buat TensorImage dari Bitmap
         val tensorImage = TensorImage(DataType.FLOAT32)
         tensorImage.load(image)
 
-        // 2. Buat ImageProcessor untuk resize DAN normalisasi
-        // Ini meniru persis apa yang dilakukan ML Model Binding
         val imageProcessor = ImageProcessor.Builder()
             .add(ResizeOp(inputImageHeight, inputImageWidth, ResizeOp.ResizeMethod.BILINEAR))
             .build()
 
-        // 3. Proses gambar
         val processedImage = imageProcessor.process(tensorImage)
 
-        // 4. Siapkan buffer untuk output
         val outputProbabilityBuffer = Array(1) { FloatArray(labels.size) }
 
-        // 5. Jalankan inferensi dengan buffer dari processedImage
         interpreter?.run(processedImage.buffer, outputProbabilityBuffer)
 
-        // ====================================================================
-
-        // 6. Proses output untuk mendapatkan hasil terbaik (kode ini tetap sama)
         val topResult = outputProbabilityBuffer[0]
             .mapIndexed { index, confidence ->
                 ClassificationResult(labels[index], confidence)

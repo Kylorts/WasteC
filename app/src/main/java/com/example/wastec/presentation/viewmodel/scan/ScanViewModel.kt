@@ -1,10 +1,11 @@
-package com.example.wastec.presentation.viewmodel
+package com.example.wastec.presentation.viewmodel.scan
 
 import android.graphics.Bitmap
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.wastec.domain.usecase.ClassifyWasteUseCase
+import com.example.wastec.domain.usecase.SaveHistoryUseCase
 import com.example.wastec.presentation.views.scan.ScanUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,7 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ScanViewModel @Inject constructor (
-    private val classifyWasteUseCase: ClassifyWasteUseCase
+    private val classifyWasteUseCase: ClassifyWasteUseCase,
+    private val saveHistoryUseCase: SaveHistoryUseCase
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(ScanUiState())
 
@@ -38,6 +40,10 @@ class ScanViewModel @Inject constructor (
                 val result = classifyWasteUseCase(bitmap)
                 _uiState.update { currentState ->
                     currentState.copy(isLoading = false, result = result, error = null)
+                }
+
+                result?.let {
+                    saveHistoryUseCase(it, bitmap)
                 }
             } catch (e: Exception) {
                 _uiState.update { currentState ->
