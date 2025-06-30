@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">WasteC</string>
+    <string name="headline_home">Selamat Datang di WasteC</string>
+    <string name="headline_small_home">Ayo mulai pilah sampah untuk lingkungan yang lebih baik</string>
+    <string name="image_content_desc_home">Logo Waste Scan</string>
+    <string name="button_scan_home">Mulai Scan Sampah</string>
+</resources>

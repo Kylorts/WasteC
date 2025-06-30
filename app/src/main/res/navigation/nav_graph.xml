@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.wastec.presentation.views.home.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_scanFragment"
+            app:destination="@id/scanFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/historyFragment"
+        android:name="com.example.wastec.presentation.views.history.HistoryFragment"
+        android:label="fragment_history"
+        tools:layout="@layout/fragment_history" />
+
+    <fragment
+        android:id="@+id/educationFragment"
+        android:name="com.example.wastec.presentation.views.education.list.EducationFragment"
+        android:label="Panduan Pilah Sampah"
+        tools:layout="@layout/fragment_education">
+        <action
+            android:id="@+id/action_educationFragment_to_educationDetailFragment"
+            app:destination="@id/educationDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/scanFragment"
+        android:name="com.example.wastec.presentation.views.scan.ScanFragment"
+        android:label="Scan Sampah"
+        tools:layout="@layout/fragment_scan" />
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.wastec.presentation.views.setting.SettingFragment"
+        android:label="Pengaturan"
+        tools:layout="@layout/fragment_setting" />
+
+    <fragment
+        android:id="@+id/educationDetailFragment"
+        android:name="com.example.wastec.presentation.views.education.detail.EducationDetailFragment"
+        android:label="Detail Kategori"
+        tools:layout="@layout/fragment_education_detail">
+
+        <argument
+            android:name="categoryId"
+            app:argType="integer" />
+    </fragment>
+
+</navigation>
