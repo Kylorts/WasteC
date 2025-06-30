@@ -5,8 +5,12 @@ import android.graphics.Bitmap
 import com.example.wastec.data.datasource.local.db.entity.HistoryEntity
 import com.example.wastec.data.datasource.local.db.room.HistoryDao
 import com.example.wastec.data.datasource.local.ml.WasteClassifierHelper
+import com.example.wastec.data.datasource.remote.ApiService
+import com.example.wastec.domain.mapper.toWasteCategoryUI
+import com.example.wastec.domain.mapper.toWasteCategoryUIList
 import com.example.wastec.domain.model.ClassificationResult
 import com.example.wastec.domain.repository.WasteRepository
+import com.example.wastec.presentation.model.WasteCategoryUi
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -18,7 +22,8 @@ import kotlin.coroutines.resume
 @Singleton
 class WasteRepositoryImpl(
     @ApplicationContext private val context: Context,
-    private val historyDao: HistoryDao
+    private val historyDao: HistoryDao,
+    private val apiService: ApiService
 ) : WasteRepository {
 
     override suspend fun classifyImage(bitmap: Bitmap): ClassificationResult? =
@@ -62,5 +67,31 @@ class WasteRepositoryImpl(
 
     override fun getHistory(): Flow<List<HistoryEntity>> {
         return historyDao.getAllHistory()
+    }
+
+    override suspend fun getEducationCategories(): List<WasteCategoryUi> {
+        return try {
+            val response = apiService.getAllCategories()
+            if (response.isSuccessful) {
+                response.body()?.toWasteCategoryUIList() ?: emptyList()
+            } else {
+                emptyList()
+            }
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+
+    override suspend fun getEducationCategoryDetail(id: Int): WasteCategoryUi? {
+        return try {
+            val response = apiService.getCategoryDetail(id)
+            if (response.isSuccessful) {
+                response.body()?.toWasteCategoryUI()
+            } else {
+                null
+            }
+        } catch (e: Exception) {
+            null
+        }
     }
 }

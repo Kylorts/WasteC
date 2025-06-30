@@ -4,15 +4,19 @@ import android.content.Context
 import androidx.room.Room
 import com.example.wastec.data.datasource.local.db.AppDatabase
 import com.example.wastec.data.datasource.local.db.room.HistoryDao
+import com.example.wastec.data.datasource.remote.ApiService
 import com.example.wastec.data.repository.WasteRepositoryImpl
 import com.example.wastec.domain.repository.WasteRepository
 import com.example.wastec.domain.usecase.ClassifyWasteUseCase
+import com.example.wastec.domain.usecase.GetEducationCategoriesUseCase
 import com.example.wastec.domain.usecase.GetHistoryUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
@@ -21,8 +25,12 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideWasteRepository(@ApplicationContext context: Context, historyDao: HistoryDao): WasteRepository {
-        return WasteRepositoryImpl(context, historyDao)
+    fun provideWasteRepository(
+        @ApplicationContext context: Context,
+        historyDao: HistoryDao,
+        apiService: ApiService
+    ): WasteRepository {
+        return WasteRepositoryImpl(context, historyDao, apiService)
     }
 
     @Provides
@@ -51,5 +59,21 @@ object AppModule {
     @Singleton
     fun provideGetHistoryUseCase(repository: WasteRepository): GetHistoryUseCase {
         return GetHistoryUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideApiService(): ApiService {
+        val retrofit = Retrofit.Builder()
+            .baseUrl("http://192.168.180.7:8000/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        return retrofit.create(ApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetEducationCategoriesUseCase(repository: WasteRepository): GetEducationCategoriesUseCase {
+        return GetEducationCategoriesUseCase(repository)
     }
 }
