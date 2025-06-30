@@ -4,16 +4,25 @@
     <item
         android:id="@+id/homeFragment"
         android:icon="@drawable/baseline_home_24"
+        android:iconTint="?android:attr/textColorPrimary"
         android:title="Home" />
 
     <item
         android:id="@+id/historyFragment"
         android:icon="@drawable/outline_history_24"
+        android:iconTint="?android:attr/textColorPrimary"
         android:title="Riwayat" />
 
     <item
         android:id="@+id/educationFragment"
         android:icon="@drawable/icons_trash"
+        android:iconTint="?android:attr/textColorPrimary"
         android:title="Edukasi" />
+
+    <item
+        android:id="@+id/settingsFragment"
+        android:icon="@drawable/baseline_settings_24"
+        android:iconTint="?android:attr/textColorPrimary"
+        android:title="Pengaturan" />
 
 </menu>

@@ -10,11 +10,14 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" android:padding="16dp">
+        android:layout_height="wrap_content"
+        android:padding="16dp">
 
         <ImageView
             android:id="@+id/image_waste_thumbnail"
-            android:layout_width="100dp" android:layout_height="100dp" android:scaleType="centerCrop"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="centerCrop"
             android:contentDescription="Gambar hasil scan"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -23,10 +26,12 @@
 
         <TextView
             android:id="@+id/text_waste_label"
-            android:layout_width="0dp" android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:text="Plastik"
             android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
+            android:textColor="?android:attr/textColorPrimary"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/image_waste_thumbnail"
@@ -39,6 +44,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="4dp"
             android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+            android:textColor="?android:attr/textColorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/image_waste_thumbnail"
             app:layout_constraintTop_toBottomOf="@+id/text_waste_label"
@@ -46,7 +52,8 @@
 
         <TextView
             android:id="@+id/text_scan_timestamp"
-            android:layout_width="0dp" android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:text="28 Juni 2025, 18:30"

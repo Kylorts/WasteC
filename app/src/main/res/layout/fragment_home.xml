@@ -28,7 +28,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/headline_home"
-                android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium"
+                android:textAppearance="@style/TextAppearance.Material3.HeadlineLarge"
+                android:textColor="?android:attr/textColorPrimary"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -41,6 +42,8 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:text="@string/headline_small_home"
+                android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                android:textColor="?android:attr/textColorSecondary"
                 android:textAlignment="center"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -66,11 +69,13 @@
                 android:layout_marginBottom="16dp"
                 android:padding="16dp"
                 android:text="@string/button_scan_home"
+                android:textColor="?android:attr/textColorPrimary"
                 app:icon="@android:drawable/ic_menu_camera"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/image_waste_scan"
                 app:layout_constraintBottom_toBottomOf="parent" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

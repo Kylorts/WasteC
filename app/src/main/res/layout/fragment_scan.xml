@@ -40,6 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:text="Pilih Gambar dari Galeri"
+                android:textColor="@color/purple_material"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/image_preview" />
@@ -51,6 +52,7 @@
                 android:layout_marginTop="8dp"
                 android:enabled="false"
                 android:text="Klasifikasi Gambar Ini"
+                android:textColor="?android:attr/textColorSecondary"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/button_open_gallery" />
@@ -62,6 +64,7 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="16dp"
                 android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
+                android:textColor="?android:attr/textColorPrimary"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/button_classify"

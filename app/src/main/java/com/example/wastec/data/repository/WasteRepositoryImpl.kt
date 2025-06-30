@@ -5,12 +5,13 @@ import android.graphics.Bitmap
 import com.example.wastec.data.datasource.local.db.entity.HistoryEntity
 import com.example.wastec.data.datasource.local.db.room.HistoryDao
 import com.example.wastec.data.datasource.local.ml.WasteClassifierHelper
+import com.example.wastec.data.datasource.local.pref.SettingsDataStore
 import com.example.wastec.data.datasource.remote.ApiService
-import com.example.wastec.domain.mapper.toWasteCategoryUI
-import com.example.wastec.domain.mapper.toWasteCategoryUIList
+import com.example.wastec.data.mapper.toDomain
+import com.example.wastec.data.mapper.toDomainList
 import com.example.wastec.domain.model.ClassificationResult
+import com.example.wastec.domain.model.WasteCategory
 import com.example.wastec.domain.repository.WasteRepository
-import com.example.wastec.presentation.model.WasteCategoryUi
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -23,7 +24,8 @@ import kotlin.coroutines.resume
 class WasteRepositoryImpl(
     @ApplicationContext private val context: Context,
     private val historyDao: HistoryDao,
-    private val apiService: ApiService
+    private val apiService: ApiService,
+    private val settingsDataStore: SettingsDataStore
 ) : WasteRepository {
 
     override suspend fun classifyImage(bitmap: Bitmap): ClassificationResult? =
@@ -69,11 +71,11 @@ class WasteRepositoryImpl(
         return historyDao.getAllHistory()
     }
 
-    override suspend fun getEducationCategories(): List<WasteCategoryUi> {
+    override suspend fun getEducationCategories(): List<WasteCategory> {
         return try {
             val response = apiService.getAllCategories()
             if (response.isSuccessful) {
-                response.body()?.toWasteCategoryUIList() ?: emptyList()
+                response.body()?.toDomainList() ?: emptyList()
             } else {
                 emptyList()
             }
@@ -82,16 +84,24 @@ class WasteRepositoryImpl(
         }
     }
 
-    override suspend fun getEducationCategoryDetail(id: Int): WasteCategoryUi? {
+    override suspend fun getEducationCategoryDetail(id: Int): WasteCategory? {
         return try {
             val response = apiService.getCategoryDetail(id)
             if (response.isSuccessful) {
-                response.body()?.toWasteCategoryUI()
+                response.body()?.toDomain()
             } else {
                 null
             }
         } catch (e: Exception) {
             null
         }
+    }
+
+    override fun getThemeSetting(): Flow<Boolean> {
+        return settingsDataStore.getThemeSetting
+    }
+
+    override suspend fun saveThemeSetting(isDarkMode: Boolean) {
+        settingsDataStore.saveThemeSetting(isDarkMode)
     }
 }

@@ -4,12 +4,15 @@ import android.content.Context
 import androidx.room.Room
 import com.example.wastec.data.datasource.local.db.AppDatabase
 import com.example.wastec.data.datasource.local.db.room.HistoryDao
+import com.example.wastec.data.datasource.local.pref.SettingsDataStore
 import com.example.wastec.data.datasource.remote.ApiService
 import com.example.wastec.data.repository.WasteRepositoryImpl
 import com.example.wastec.domain.repository.WasteRepository
 import com.example.wastec.domain.usecase.ClassifyWasteUseCase
 import com.example.wastec.domain.usecase.GetEducationCategoriesUseCase
 import com.example.wastec.domain.usecase.GetHistoryUseCase
+import com.example.wastec.domain.usecase.GetThemeUseCase
+import com.example.wastec.domain.usecase.SaveThemeUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,9 +31,10 @@ object AppModule {
     fun provideWasteRepository(
         @ApplicationContext context: Context,
         historyDao: HistoryDao,
-        apiService: ApiService
+        apiService: ApiService,
+        settingsDataStore: SettingsDataStore
     ): WasteRepository {
-        return WasteRepositoryImpl(context, historyDao, apiService)
+        return WasteRepositoryImpl(context, historyDao, apiService, settingsDataStore)
     }
 
     @Provides
@@ -76,4 +80,17 @@ object AppModule {
     fun provideGetEducationCategoriesUseCase(repository: WasteRepository): GetEducationCategoriesUseCase {
         return GetEducationCategoriesUseCase(repository)
     }
+
+    @Provides
+    @Singleton
+    fun provideGetThemeUseCase(repository: WasteRepository): GetThemeUseCase {
+        return GetThemeUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSaveThemeUseCase(repository: WasteRepository): SaveThemeUseCase {
+        return SaveThemeUseCase(repository)
+    }
+
 }

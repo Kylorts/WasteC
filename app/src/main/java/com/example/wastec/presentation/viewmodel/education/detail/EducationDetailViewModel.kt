@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.wastec.domain.usecase.GetEducationCategoryDetailUseCase
+import com.example.wastec.presentation.mapper.toUi
 import com.example.wastec.presentation.views.education.detail.EducationDetailUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,8 +32,9 @@ class EducationDetailViewModel @Inject constructor(
         _uiState.update { it.copy(isLoading = true) }
         viewModelScope.launch {
             try {
-                val category = getEducationCategoryDetailUseCase(categoryId)
-                _uiState.update { it.copy(isLoading = false, category = category, error = null) }
+                val categoryDomain = getEducationCategoryDetailUseCase(categoryId)
+                val categoryUi = categoryDomain?.toUi()
+                _uiState.update { it.copy(isLoading = false, category = categoryUi, error = null) }
             } catch (e: Exception) {
                 _uiState.update { it.copy(isLoading = false, error = "Gagal memuat detail: ${e.message}") }
             }

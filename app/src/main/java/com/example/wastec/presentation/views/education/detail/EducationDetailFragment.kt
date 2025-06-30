@@ -10,7 +10,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.wastec.databinding.FragmentEducationDetailBinding
 import com.example.wastec.presentation.viewmodel.education.detail.EducationDetailViewModel
