@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.suspendCancellableCoroutine
 import java.io.File
 import java.io.FileOutputStream
+import java.io.IOException
 import javax.inject.Singleton
 import kotlin.coroutines.resume
 
@@ -72,28 +73,20 @@ class WasteRepositoryImpl(
     }
 
     override suspend fun getEducationCategories(): List<WasteCategory> {
-        return try {
-            val response = apiService.getAllCategories()
-            if (response.isSuccessful) {
-                response.body()?.toDomainList() ?: emptyList()
-            } else {
-                emptyList()
-            }
-        } catch (e: Exception) {
-            emptyList()
+        val response = apiService.getAllCategories()
+        if (response.isSuccessful) {
+            return response.body()?.toDomainList() ?: emptyList()
+        } else {
+            throw IOException("Error: ${response.code()} - ${response.message()}")
         }
     }
 
     override suspend fun getEducationCategoryDetail(id: Int): WasteCategory? {
-        return try {
-            val response = apiService.getCategoryDetail(id)
-            if (response.isSuccessful) {
-                response.body()?.toDomain()
-            } else {
-                null
-            }
-        } catch (e: Exception) {
-            null
+        val response = apiService.getCategoryDetail(id)
+        if (response.isSuccessful) {
+                return response.body()?.toDomain()
+        } else {
+            throw IOException("Error: ${response.code()} - ${response.message()}")
         }
     }
 

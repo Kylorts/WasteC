@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -30,7 +31,14 @@ class EducationViewModel @Inject constructor(
             try {
                 val categoriesDomain = getEducationCategoriesUseCase()
                 val categoriesUi = categoriesDomain.toUiList()
+                if (categoriesUi.isNotEmpty()) {
+                    _uiState.update { it.copy(isLoading = false, categories = categoriesUi, error = null) }
+                } else {
+                    _uiState.update { it.copy(isLoading = false, categories = emptyList(), error = "Data tidak ditemukan.") }
+                }
                 _uiState.update { it.copy(isLoading = false, categories = categoriesUi, error = null) }
+            } catch (e: IOException) {
+                _uiState.update { it.copy(isLoading = false, error = "Periksa koneksi internet Anda.") }
             } catch (e: Exception) {
                 _uiState.update { it.copy(isLoading = false, error = "Gagal memuat data: ${e.message}") }
             }

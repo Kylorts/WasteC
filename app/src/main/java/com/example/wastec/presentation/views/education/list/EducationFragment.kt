@@ -1,6 +1,7 @@
 package com.example.wastec.presentation.views.education.list
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -51,15 +52,19 @@ class EducationFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect { state ->
+                    Log.d("EducationFragment", "Current State: $state")
                     binding.progressBar.isVisible = state.isLoading
-                    binding.textErrorMessage.isVisible = state.error != null
-                    binding.textErrorMessage.text = state.error
 
-                    if (state.categories.isNotEmpty()) {
-                        binding.recyclerViewEducation.isVisible = true
-                        educationAdapter.submitList(state.categories)
-                    } else {
+                    if (state.error != null) {
+                        binding.textErrorMessage.isVisible = true
+                        binding.textErrorMessage.text = state.error
                         binding.recyclerViewEducation.isVisible = false
+                    } else {
+                        binding.textErrorMessage.isVisible = false
+
+                        val isListEmpty = state.categories.isEmpty()
+                        binding.recyclerViewEducation.isVisible = !isListEmpty
+                        educationAdapter.submitList(state.categories)
                     }
                 }
             }
