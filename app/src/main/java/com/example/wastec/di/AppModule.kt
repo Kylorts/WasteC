@@ -69,7 +69,7 @@ object AppModule {
     @Singleton
     fun provideApiService(): ApiService {
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.180.7:8000/")
+            .baseUrl("http://192.168.180.7:8000/") //Sesuaikan dengan IP lokal PC/Laptop Anda untuk koneksi dengan FastAPi
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         return retrofit.create(ApiService::class.java)
